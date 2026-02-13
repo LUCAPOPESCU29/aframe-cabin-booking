@@ -458,7 +458,19 @@ export function CabinBookingCard({ cabin }: CabinBookingCardProps) {
           {/* Action Buttons */}
           <div className="space-y-3">
             <div className="flex justify-center">
-              <PayNowButton />
+              <PayNowButton
+                bookingData={{
+                  cabinId: cabin.slug,
+                  cabinName: cabin.name,
+                  checkIn,
+                  checkOut,
+                  guests,
+                  guestName,
+                  guestEmail,
+                  guestPhone,
+                  total
+                }}
+              />
             </div>
 
             <Button

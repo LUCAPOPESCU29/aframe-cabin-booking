@@ -1,0 +1,118 @@
+.booking-toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  width: 380px;
+  background: white;
+  border-radius: 16px;
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(90, 122, 82, 0.1);
+  overflow: hidden;
+  z-index: 10000;
+}
+
+.booking-toast-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  position: relative;
+}
+
+.booking-toast-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-sage) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  animation: pulse-scale 2s ease-in-out infinite;
+}
+
+@keyframes pulse-scale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.booking-toast-text {
+  flex: 1;
+}
+
+.booking-toast-text h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--brown-deep);
+  margin: 0 0 4px 0;
+  font-family: var(--font-heading);
+}
+
+.booking-toast-text p {
+  font-size: 14px;
+  color: var(--text-body);
+  margin: 0;
+  font-family: var(--font-body);
+}
+
+.booking-toast-close {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: var(--linen-soft);
+  color: var(--brown-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.booking-toast-close:hover {
+  background: var(--tan-light);
+  transform: rotate(90deg);
+}
+
+.booking-toast-progress {
+  height: 4px;
+  background: linear-gradient(90deg, var(--green-deep) 0%, var(--green-sage) 100%);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+/* Mobile responsive */
+@media (max-width: 500px) {
+  .booking-toast {
+    width: calc(100% - 32px);
+    right: 16px;
+    top: 16px;
+  }
+
+  .booking-toast-content {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .booking-toast-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .booking-toast-text h3 {
+    font-size: 14px;
+  }
+
+  .booking-toast-text p {
+    font-size: 13px;
+  }
+}

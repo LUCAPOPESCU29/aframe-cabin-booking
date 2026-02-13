@@ -2,26 +2,89 @@
 
 import { useState } from 'react';
 import PaymentMethodModal from './PaymentMethodModal';
+import BookingConfirmationToast from './BookingConfirmationToast';
 import './PayNowButton.css';
 
-export default function PayNowButton() {
+interface PayNowButtonProps {
+  bookingData?: {
+    cabinId: string;
+    cabinName: string;
+    checkIn: string;
+    checkOut: string;
+    guests: number;
+    guestName: string;
+    guestEmail: string;
+    guestPhone: string;
+    total: number;
+  };
+}
+
+export default function PayNowButton({ bookingData }: PayNowButtonProps = {}) {
   const [showModal, setShowModal] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleClick = () => {
     setShowModal(true);
   };
 
-  const handleSelectMethod = (method: 'card' | 'iban' | 'crypto') => {
-    console.log('Selected payment method:', method);
+  const handleSelectMethod = async (method: 'card' | 'iban' | 'crypto' | 'cash') => {
     setShowModal(false);
-    // Here you can add logic to navigate to the specific payment page
-    alert(`Payment method selected: ${method.toUpperCase()}\n(This is a demo)`);
+    setIsProcessing(true);
+
+    try {
+      // Save booking to database
+      if (bookingData) {
+        const response = await fetch('/api/booking', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...bookingData,
+            paymentMethod: method,
+            status: 'confirmed',
+            paymentStatus: method === 'cash' ? 'pending' : 'pending'
+          }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Show confirmation toast
+          setShowConfirmation(true);
+
+          // Auto-hide after 5 seconds
+          setTimeout(() => {
+            setShowConfirmation(false);
+          }, 5000);
+        } else {
+          console.error('Booking error:', data.error);
+          alert(`Booking failed: ${data.error}`);
+        }
+      } else {
+        // No booking data - just show confirmation for demo
+        setShowConfirmation(true);
+        setTimeout(() => {
+          setShowConfirmation(false);
+        }, 5000);
+      }
+    } catch (error) {
+      console.error('Booking error:', error);
+      alert('Booking failed. Please try again.');
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
     <>
-      <button className="pay-btn" onClick={handleClick}>
-        <span className="btn-text">Pay Now</span>
+      <button
+        className="pay-btn"
+        onClick={handleClick}
+        disabled={isProcessing}
+      >
+        <span className="btn-text">
+          {isProcessing ? 'Processing...' : 'Pay Now'}
+        </span>
         <div className="icon-container">
           <svg viewBox="0 0 24 24" className="icon card-icon">
             <path
@@ -60,6 +123,11 @@ export default function PayNowButton() {
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         onSelectMethod={handleSelectMethod}
+      />
+
+      <BookingConfirmationToast
+        isVisible={showConfirmation}
+        onClose={() => setShowConfirmation(false)}
       />
     </>
   );

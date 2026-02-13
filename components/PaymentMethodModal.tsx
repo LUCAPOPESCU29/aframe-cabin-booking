@@ -2,19 +2,19 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CreditCard, Building2, Bitcoin, X } from 'lucide-react';
+import { CreditCard, Building2, Bitcoin, X, Banknote } from 'lucide-react';
 import './PaymentMethodModal.css';
 
 interface PaymentMethodModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSelectMethod: (method: 'card' | 'iban' | 'crypto') => void;
+  onSelectMethod: (method: 'card' | 'iban' | 'crypto' | 'cash') => void;
 }
 
 export default function PaymentMethodModal({ isOpen, onClose, onSelectMethod }: PaymentMethodModalProps) {
-  const [selectedMethod, setSelectedMethod] = useState<'card' | 'iban' | 'crypto' | null>(null);
+  const [selectedMethod, setSelectedMethod] = useState<'card' | 'iban' | 'crypto' | 'cash' | null>(null);
 
-  const handleMethodClick = (method: 'card' | 'iban' | 'crypto') => {
+  const handleMethodClick = (method: 'card' | 'iban' | 'crypto' | 'cash') => {
     setSelectedMethod(method);
     setTimeout(() => {
       onSelectMethod(method);
@@ -99,6 +99,20 @@ export default function PaymentMethodModal({ isOpen, onClose, onSelectMethod }: 
                 </h3>
                 <p>Pay with Bitcoin</p>
                 <div className="payment-method-badge crypto-badge">Fast</div>
+              </motion.button>
+
+              {/* Cash */}
+              <motion.button
+                whileHover={{ y: -8, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={`payment-method-card ${selectedMethod === 'cash' ? 'selected' : ''}`}
+                onClick={() => handleMethodClick('cash')}
+              >
+                <div className="payment-method-icon cash-icon">
+                  <Banknote size={32} />
+                </div>
+                <h3>Cash</h3>
+                <p>Pay on arrival</p>
               </motion.button>
             </div>
 
