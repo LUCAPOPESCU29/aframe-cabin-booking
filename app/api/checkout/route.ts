@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-01-28.clover',
-});
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY || '';
+const stripe = stripeSecretKey && !stripeSecretKey.includes('placeholder')
+  ? new Stripe(stripeSecretKey, {
+      apiVersion: '2026-01-28.clover',
+    })
+  : null;
 
 export async function POST(req: NextRequest) {
   try {
@@ -23,6 +26,14 @@ export async function POST(req: NextRequest) {
       guestName,
       language = 'en'
     } = body;
+
+    // Check if Stripe is properly configured
+    if (!stripe) {
+      return NextResponse.json(
+        { error: 'Payment processing is not configured. Please contact support.' },
+        { status: 503 }
+      );
+    }
 
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({

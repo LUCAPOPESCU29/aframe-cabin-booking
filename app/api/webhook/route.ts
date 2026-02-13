@@ -3,13 +3,22 @@ import Stripe from 'stripe';
 import { sendBookingConfirmation } from '@/lib/resend';
 import { getBookingConfirmationEmail } from '@/lib/email-templates';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-01-28.clover',
-});
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY || '';
+const stripe = stripeSecretKey && !stripeSecretKey.includes('placeholder')
+  ? new Stripe(stripeSecretKey, {
+      apiVersion: '2026-01-28.clover',
+    })
+  : null;
 
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || '';
 
 export async function POST(req: NextRequest) {
+  // Check if Stripe is properly configured
+  if (!stripe || !webhookSecret) {
+    console.error('Stripe webhook endpoint called but Stripe is not configured');
+    return NextResponse.json({ error: 'Webhook not configured' }, { status: 503 });
+  }
+
   const body = await req.text();
   const signature = req.headers.get('stripe-signature')!;
 
