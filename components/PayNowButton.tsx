@@ -12,6 +12,10 @@ interface PayNowButtonProps {
     checkIn: string;
     checkOut: string;
     guests: number;
+    nights?: number;
+    basePrice?: number;
+    cleaningFee?: number;
+    serviceFee?: number;
     guestName: string;
     guestEmail: string;
     guestPhone: string;
@@ -35,14 +39,30 @@ export default function PayNowButton({ bookingData }: PayNowButtonProps = {}) {
     try {
       // Save booking to database
       if (bookingData) {
+        // Calculate nights from dates if not provided
+        const checkInDate = new Date(bookingData.checkIn);
+        const checkOutDate = new Date(bookingData.checkOut);
+        const nights = bookingData.nights || Math.ceil((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24));
+
         const response = await fetch('/api/booking', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            ...bookingData,
+            cabinId: bookingData.cabinId,
+            cabinName: bookingData.cabinName,
+            checkIn: bookingData.checkIn,
+            checkOut: bookingData.checkOut,
+            guests: bookingData.guests,
+            nights: nights,
+            basePrice: bookingData.basePrice || 0,
+            cleaningFee: bookingData.cleaningFee || 300,
+            serviceFee: bookingData.serviceFee || 0,
+            total: bookingData.total,
+            guestName: bookingData.guestName,
+            guestEmail: bookingData.guestEmail,
+            guestPhone: bookingData.guestPhone,
             paymentMethod: method,
-            status: 'confirmed',
-            paymentStatus: method === 'cash' ? 'pending' : 'pending'
+            language: 'en'
           }),
         });
 
