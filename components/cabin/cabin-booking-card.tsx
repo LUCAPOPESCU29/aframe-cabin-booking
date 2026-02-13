@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Cabin } from '@/lib/data/cabins';
@@ -8,6 +9,7 @@ import { useLanguage } from '@/components/providers/language-provider';
 import { Loader2, Calendar as CalendarIcon } from 'lucide-react';
 import { BookingCalendar } from '@/components/calendar/booking-calendar';
 import { useAuth } from '@/lib/auth/auth-context';
+import PayNowButton from '@/components/PayNowButton';
 
 interface CabinBookingCardProps {
   cabin: Cabin;
@@ -16,6 +18,7 @@ interface CabinBookingCardProps {
 export function CabinBookingCard({ cabin }: CabinBookingCardProps) {
   const { t, language } = useLanguage();
   const { user } = useAuth();
+  const router = useRouter();
   const [guests, setGuests] = useState(2);
   const [checkInDate, setCheckInDate] = useState<Date | null>(null);
   const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
@@ -454,21 +457,9 @@ export function CabinBookingCard({ cabin }: CabinBookingCardProps) {
 
           {/* Action Buttons */}
           <div className="space-y-3">
-            <Button
-              size="lg"
-              onClick={handleCheckout}
-              disabled={loading}
-              className="w-full bg-[var(--green-deep)] text-[var(--cream-warm)] hover:bg-[var(--green-sage)] rounded-full text-lg py-6"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  {language === 'en' ? 'Processing...' : 'Se procesează...'}
-                </>
-              ) : (
-                language === 'en' ? 'Proceed to Payment' : 'Continuă la Plată'
-              )}
-            </Button>
+            <div className="flex justify-center">
+              <PayNowButton />
+            </div>
 
             <Button
               size="sm"
