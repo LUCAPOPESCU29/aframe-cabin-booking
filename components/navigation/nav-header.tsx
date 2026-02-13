@@ -9,6 +9,7 @@ import { useAuth } from '@/lib/auth/auth-context';
 import { useLanguage } from '@/components/providers/language-provider';
 import { LanguageToggle } from '@/components/language-toggle';
 import { Button } from '@/components/ui/button';
+import ProfileDropdown from '@/components/ProfileDropdown';
 
 export function NavHeader() {
   const { user, signOut, isAdmin } = useAuth();
@@ -89,32 +90,8 @@ export function NavHeader() {
 
               {user ? (
                 <>
-                  {/* User Info - Clickable for Admin */}
-                  {isAdmin ? (
-                    <Link
-                      href="/admin"
-                      className={`flex items-center space-x-2 px-3 py-2 rounded-full cursor-pointer transition-all duration-300 ${
-                        isScrolled ? 'bg-[var(--tan-light)] hover:bg-[var(--tan-base)]' : 'bg-white/20 backdrop-blur-sm hover:bg-white/30'
-                      }`}
-                    >
-                      <User size={16} className={isScrolled ? 'text-[var(--brown-deep)]' : 'text-white'} />
-                      <span className={`text-sm font-medium ${isScrolled ? 'text-[var(--brown-deep)]' : 'text-white'}`}>
-                        {user.fullName}
-                      </span>
-                      <span className="ml-1 px-2 py-0.5 bg-[var(--green-sage)] text-white text-xs font-semibold rounded-full">
-                        ADMIN
-                      </span>
-                    </Link>
-                  ) : (
-                    <div className={`flex items-center space-x-2 px-3 py-2 rounded-full ${
-                      isScrolled ? 'bg-[var(--tan-light)]' : 'bg-white/20 backdrop-blur-sm'
-                    }`}>
-                      <User size={16} className={isScrolled ? 'text-[var(--brown-deep)]' : 'text-white'} />
-                      <span className={`text-sm font-medium ${isScrolled ? 'text-[var(--brown-deep)]' : 'text-white'}`}>
-                        {user.fullName}
-                      </span>
-                    </div>
-                  )}
+                  {/* Profile Dropdown */}
+                  <ProfileDropdown />
 
                   {/* Sign Out Button */}
                   <button

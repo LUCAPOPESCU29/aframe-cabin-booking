@@ -147,6 +147,11 @@ class DatabaseAdapter {
     return await supabaseDb.deleteBooking(id);
   }
 
+  async getUserBookings(email: string): Promise<Booking[]> {
+    const bookings = await supabaseDb.getUserBookings(email);
+    return bookings.map(fromSupabaseBooking);
+  }
+
   // Reviews
   async getAllReviews(): Promise<Review[]> {
     const reviews = await supabaseDb.getAllReviews();

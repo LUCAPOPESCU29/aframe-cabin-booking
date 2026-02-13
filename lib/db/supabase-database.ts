@@ -80,7 +80,7 @@ class SupabaseDatabase {
   }
 
   async getBookingByReference(reference: string): Promise<Booking | null> {
-    const { data, error } = await supabaseAdmin
+    const { data, error} = await supabaseAdmin
       .from('bookings')
       .select('*')
       .eq('booking_reference', reference)
@@ -92,6 +92,21 @@ class SupabaseDatabase {
     }
 
     return data;
+  }
+
+  async getUserBookings(email: string): Promise<Booking[]> {
+    const { data, error } = await supabaseAdmin
+      .from('bookings')
+      .select('*')
+      .eq('guest_email', email.toLowerCase())
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching user bookings:', error);
+      return [];
+    }
+
+    return data || [];
   }
 
   async createBooking(booking: Omit<Booking, 'id' | 'created_at' | 'updated_at'>): Promise<Booking | null> {
