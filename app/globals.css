@@ -1,0 +1,166 @@
+/* Google Fonts - must be at top */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'DM Sans', sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+}
+
+:root {
+  --radius: 1rem;
+
+  /* A-Frame Cabin Color Palette - Refined & Softer */
+  --brown-deep: #3A2920;
+  --brown-rich: #6B5447;
+  --brown-medium: #9B8474;
+  --tan-light: #E8DDD0;
+
+  --green-deep: #5A7A52;
+  --green-sage: #7FA876;
+  --green-dark: #4A6344;
+
+  --cream-warm: #FFFCF7;
+  --linen-soft: #F9F5F0;
+  --espresso-deep: #2A1F1A;
+
+  --text-body: #6B5B4F;
+
+  /* Theme Variables */
+  --background: var(--cream-warm);
+  --foreground: var(--brown-deep);
+  --card: #FFFFFF;
+  --card-foreground: var(--brown-deep);
+  --popover: #FFFFFF;
+  --popover-foreground: var(--brown-deep);
+  --primary: var(--green-deep);
+  --primary-foreground: var(--cream-warm);
+  --secondary: var(--brown-rich);
+  --secondary-foreground: var(--cream-warm);
+  --muted: var(--linen-soft);
+  --muted-foreground: var(--text-body);
+  --accent: var(--green-sage);
+  --accent-foreground: var(--cream-warm);
+  --destructive: #DC2626;
+  --destructive-foreground: var(--cream-warm);
+  --border: var(--tan-light);
+  --input: var(--tan-light);
+  --ring: var(--green-deep);
+}
+
+.dark {
+  --background: var(--espresso-deep);
+  --foreground: var(--cream-warm);
+  --card: var(--brown-rich);
+  --card-foreground: var(--cream-warm);
+  --popover: var(--brown-rich);
+  --popover-foreground: var(--cream-warm);
+  --primary: var(--green-sage);
+  --primary-foreground: var(--espresso-deep);
+  --secondary: var(--brown-medium);
+  --secondary-foreground: var(--cream-warm);
+  --muted: var(--brown-rich);
+  --muted-foreground: var(--tan-light);
+  --accent: var(--green-dark);
+  --accent-foreground: var(--cream-warm);
+  --border: var(--brown-medium);
+  --input: var(--brown-medium);
+  --ring: var(--green-sage);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    line-height: 1.7;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--brown-deep);
+    line-height: 1.2;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+  }
+
+  h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 600;
+  }
+
+  h3 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 600;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Grain texture overlay for organic feel */
+@layer utilities {
+  .grain-texture {
+    position: relative;
+  }
+
+  .grain-texture::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
